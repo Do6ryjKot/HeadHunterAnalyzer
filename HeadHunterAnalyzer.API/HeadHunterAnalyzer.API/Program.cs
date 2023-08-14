@@ -1,8 +1,10 @@
+using Contracts.DataServices;
 using Contracts.Logger;
 using HeadHunterAnalyzer.API.Extensions;
 using HeadHunterAnalyzer.API.Filters;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,8 @@ builder.Services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInva
 builder.Services.AddScoped<ValidationFilterAttribute>();
 
 builder.Services.ConfigureSwagger();
+
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
 builder.Services.AddControllers();
 
