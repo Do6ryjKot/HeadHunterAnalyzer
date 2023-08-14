@@ -1317,10 +1317,6 @@
       "Repository/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
-        "dependencies": {
-          "Contracts": "1.0.0",
-          "Microsoft.EntityFrameworkCore": "7.0.10"
-        },
         "compile": {
           "bin/placeholder/Repository.dll": {}
         },
