@@ -12,7 +12,7 @@
     "HeadHunterAnalyzer.API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "weatherforecast",
       "applicationUrl": "http://localhost:5248",
       "environmentVariables": {

@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeadHunterAnalyzer.API", "HeadHunterAnalyzer.API\HeadHunterAnalyzer.API.csproj", "{3DBB0714-8E30-422C-9197-3B5CA05EA543}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeadHunterAnalyzer.API", "HeadHunterAnalyzer.API\HeadHunterAnalyzer.API.csproj", "{3DBB0714-8E30-422C-9197-3B5CA05EA543}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{F46F343B-D90D-4908-AD3D-DD4DF1674463}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{298A7228-C92C-4C71-AFF4-E2BB9A4045BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{3DBB0714-8E30-422C-9197-3B5CA05EA543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DBB0714-8E30-422C-9197-3B5CA05EA543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DBB0714-8E30-422C-9197-3B5CA05EA543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F46F343B-D90D-4908-AD3D-DD4DF1674463}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F46F343B-D90D-4908-AD3D-DD4DF1674463}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F46F343B-D90D-4908-AD3D-DD4DF1674463}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F46F343B-D90D-4908-AD3D-DD4DF1674463}.Release|Any CPU.Build.0 = Release|Any CPU
+		{298A7228-C92C-4C71-AFF4-E2BB9A4045BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{298A7228-C92C-4C71-AFF4-E2BB9A4045BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{298A7228-C92C-4C71-AFF4-E2BB9A4045BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{298A7228-C92C-4C71-AFF4-E2BB9A4045BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
