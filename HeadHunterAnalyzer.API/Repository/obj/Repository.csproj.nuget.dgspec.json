@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\LoggerService\\LoggerService.csproj": {}
+    "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\Repository\\Repository.csproj": {}
   },
   "projects": {
     "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\Contracts\\Contracts.csproj": {
@@ -134,14 +134,14 @@
         }
       }
     },
-    "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\LoggerService\\LoggerService.csproj": {
+    "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\Repository\\Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\LoggerService\\LoggerService.csproj",
-        "projectName": "LoggerService",
-        "projectPath": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\LoggerService\\LoggerService.csproj",
+        "projectUniqueName": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\Repository\\Repository.csproj",
+        "projectName": "Repository",
+        "projectPath": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\Repository\\Repository.csproj",
         "packagesPath": "C:\\Users\\arkha\\.nuget\\packages\\",
-        "outputPath": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\LoggerService\\obj\\",
+        "outputPath": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\Repository\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "d:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -179,9 +179,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "NLog.Extensions.Logging": {
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[5.3.3, )"
+              "version": "[7.0.10, )"
             }
           },
           "imports": [

@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeadHunterAnalyzer.API", "H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{F46F343B-D90D-4908-AD3D-DD4DF1674463}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{298A7228-C92C-4C71-AFF4-E2BB9A4045BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{298A7228-C92C-4C71-AFF4-E2BB9A4045BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{46472C72-2A1B-4FB9-8F7F-DF3A4E75B5FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E394A0F5-8E83-485B-A35C-011A0A9AAD9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46472C72-2A1B-4FB9-8F7F-DF3A4E75B5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46472C72-2A1B-4FB9-8F7F-DF3A4E75B5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46472C72-2A1B-4FB9-8F7F-DF3A4E75B5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46472C72-2A1B-4FB9-8F7F-DF3A4E75B5FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

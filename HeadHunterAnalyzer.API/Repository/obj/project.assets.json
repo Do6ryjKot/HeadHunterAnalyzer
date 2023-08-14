@@ -89,22 +89,6 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Configuration.Abstractions/6.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Primitives": "6.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "Microsoft.Extensions.DependencyInjection/7.0.0": {
         "type": "package",
         "dependencies": {
@@ -215,37 +199,6 @@
         },
         "build": {
           "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "NLog/5.2.3": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/NLog.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/NLog.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "NLog.Extensions.Logging/5.3.3": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Logging": "6.0.0",
-          "NLog": "5.2.3"
-        },
-        "compile": {
-          "lib/net6.0/NLog.Extensions.Logging.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/NLog.Extensions.Logging.dll": {
-            "related": ".xml"
-          }
         }
       },
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {
@@ -387,25 +340,6 @@
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Memory.xml",
         "microsoft.extensions.caching.memory.7.0.0.nupkg.sha512",
         "microsoft.extensions.caching.memory.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "Microsoft.Extensions.Configuration.Abstractions/6.0.0": {
-      "sha512": "qWzV9o+ZRWq+pGm+1dF+R7qTgTYoXvbyowRoBxQJGfqTpqDun2eteerjRQhq5PQ/14S+lqto3Ft4gYaRyl4rdQ==",
-      "type": "package",
-      "path": "microsoft.extensions.configuration.abstractions/6.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/Microsoft.Extensions.Configuration.Abstractions.dll",
-        "lib/net461/Microsoft.Extensions.Configuration.Abstractions.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.xml",
-        "microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
-        "microsoft.extensions.configuration.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
@@ -622,55 +556,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "NLog/5.2.3": {
-      "sha512": "rHTNRtQF5qYqLutSR9ldUWXglKym/KA1R6GKw4JtDvza8i5+kgfmeKH75Ccn1noeJIOjHLXorphMxKk3EiN2tg==",
-      "type": "package",
-      "path": "nlog/5.2.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "N.png",
-        "lib/net35/NLog.dll",
-        "lib/net35/NLog.xml",
-        "lib/net45/NLog.dll",
-        "lib/net45/NLog.xml",
-        "lib/net46/NLog.dll",
-        "lib/net46/NLog.xml",
-        "lib/netstandard1.3/NLog.dll",
-        "lib/netstandard1.3/NLog.xml",
-        "lib/netstandard1.5/NLog.dll",
-        "lib/netstandard1.5/NLog.xml",
-        "lib/netstandard2.0/NLog.dll",
-        "lib/netstandard2.0/NLog.xml",
-        "nlog.5.2.3.nupkg.sha512",
-        "nlog.nuspec"
-      ]
-    },
-    "NLog.Extensions.Logging/5.3.3": {
-      "sha512": "o3V1oUr0izjhU1djuVqN5JdmNUGmunTs3Amjhumt/nxva8kG9QWjOdba+ciwkP//QOjv+KkGklZtI9o4qz50hQ==",
-      "type": "package",
-      "path": "nlog.extensions.logging/5.3.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "N.png",
-        "README.md",
-        "lib/net461/NLog.Extensions.Logging.dll",
-        "lib/net461/NLog.Extensions.Logging.xml",
-        "lib/net6.0/NLog.Extensions.Logging.dll",
-        "lib/net6.0/NLog.Extensions.Logging.xml",
-        "lib/netstandard1.3/NLog.Extensions.Logging.dll",
-        "lib/netstandard1.3/NLog.Extensions.Logging.xml",
-        "lib/netstandard1.5/NLog.Extensions.Logging.dll",
-        "lib/netstandard1.5/NLog.Extensions.Logging.xml",
-        "lib/netstandard2.0/NLog.Extensions.Logging.dll",
-        "lib/netstandard2.0/NLog.Extensions.Logging.xml",
-        "lib/netstandard2.1/NLog.Extensions.Logging.dll",
-        "lib/netstandard2.1/NLog.Extensions.Logging.xml",
-        "nlog.extensions.logging.5.3.3.nupkg.sha512",
-        "nlog.extensions.logging.nuspec"
-      ]
-    },
     "System.Runtime.CompilerServices.Unsafe/6.0.0": {
       "sha512": "/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
       "type": "package",
@@ -710,7 +595,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "Contracts >= 1.0.0",
-      "NLog.Extensions.Logging >= 5.3.3"
+      "Microsoft.EntityFrameworkCore >= 7.0.10"
     ]
   },
   "packageFolders": {
@@ -720,11 +605,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\LoggerService\\LoggerService.csproj",
-      "projectName": "LoggerService",
-      "projectPath": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\LoggerService\\LoggerService.csproj",
+      "projectUniqueName": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\Repository\\Repository.csproj",
+      "projectName": "Repository",
+      "projectPath": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\Repository\\Repository.csproj",
       "packagesPath": "C:\\Users\\arkha\\.nuget\\packages\\",
-      "outputPath": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\LoggerService\\obj\\",
+      "outputPath": "D:\\Учеба\\Work\\Projects\\HeadHunterAnalyzer\\HeadHunterAnalyzer.API\\Repository\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "d:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -762,9 +647,9 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
-          "NLog.Extensions.Logging": {
+          "Microsoft.EntityFrameworkCore": {
             "target": "Package",
-            "version": "[5.3.3, )"
+            "version": "[7.0.10, )"
           }
         },
         "imports": [
