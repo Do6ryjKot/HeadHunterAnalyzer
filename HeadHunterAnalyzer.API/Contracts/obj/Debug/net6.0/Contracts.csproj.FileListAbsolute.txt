@@ -10,3 +10,6 @@ D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Contracts\
 D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Contracts\obj\Debug\net6.0\refint\Contracts.dll
 D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Contracts\obj\Debug\net6.0\Contracts.pdb
 D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Contracts\obj\Debug\net6.0\ref\Contracts.dll
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Contracts\bin\Debug\net6.0\Entities.dll
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Contracts\bin\Debug\net6.0\Entities.pdb
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Contracts\obj\Debug\net6.0\Contracts.csproj.CopyComplete

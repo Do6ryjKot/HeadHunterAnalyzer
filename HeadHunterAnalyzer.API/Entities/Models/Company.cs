@@ -13,6 +13,6 @@ namespace Entities.Models {
 		[MaxLength(100, ErrorMessage = "Название компании может содержать максимум 100 символов")]
 		public string Name { get; set; }
 
-		public ICollection<Vacancy> Vacancies { get; set; }
+		public ICollection<Vacancy> Vacancies { get; set; } = new List<Vacancy>();
 	}
 }

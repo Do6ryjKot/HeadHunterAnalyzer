@@ -4,6 +4,17 @@
         <name>HeadHunterAnalyzer.API</name>
     </assembly>
     <members>
+        <member name="M:HeadHunterAnalyzer.API.Controllers.VacanciesController.SaveAnalyzedVacancy(Entities.DataTransferObjects.VacancyForCreationDto)">
+            <summary>
+            Сохранение вакансии с набором слов.
+            </summary>
+            <param name="vacancyData">Данные вакансии.</param>
+            <response code="200">Вакансия сохранена успешно.</response>
+            <response code="400">Вакансия с ид id уже существует.</response>
+            <response code="400">Если параметр null.</response>
+            <response code="422">Если параметр не прошел валидацию.</response>
+            <response code="500">Произошла ошибка при парсинге вакансии с ид id. Проверьте переданный ид на правильность или свяжитесь с разработчиком.</response>
+        </member>
         <member name="T:HeadHunterAnalyzer.API.Extensions.ServiceExtensions">
             <summary>
             Класс с методами расширения для контейнера сервисов.

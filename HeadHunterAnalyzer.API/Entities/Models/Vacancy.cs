@@ -19,6 +19,6 @@ namespace Entities.Models {
 		public Guid CompanyId { get; set; }
 		public Company Company { get; set; }
 
-		public ICollection<Word> Words { get; set; }
+		public ICollection<Word> Words { get; set; } = new List<Word>();
 	}
 }
