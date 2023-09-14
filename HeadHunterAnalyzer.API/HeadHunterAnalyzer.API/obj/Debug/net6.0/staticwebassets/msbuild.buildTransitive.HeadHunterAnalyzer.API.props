@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\HeadHunterAnalyzer.API.props" />
-</Project>
