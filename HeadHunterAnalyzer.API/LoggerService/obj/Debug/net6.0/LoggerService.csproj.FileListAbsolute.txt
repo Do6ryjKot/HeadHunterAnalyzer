@@ -13,3 +13,5 @@ D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\LoggerServ
 D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\LoggerService\obj\Debug\net6.0\refint\LoggerService.dll
 D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\LoggerService\obj\Debug\net6.0\LoggerService.pdb
 D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\LoggerService\obj\Debug\net6.0\ref\LoggerService.dll
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\LoggerService\bin\Debug\net6.0\Entities.dll
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\LoggerService\bin\Debug\net6.0\Entities.pdb

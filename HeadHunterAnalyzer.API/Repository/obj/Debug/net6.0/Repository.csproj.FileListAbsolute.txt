@@ -1,0 +1,17 @@
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\bin\Debug\net6.0\Repository.deps.json
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\bin\Debug\net6.0\Repository.dll
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\bin\Debug\net6.0\Repository.pdb
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\bin\Debug\net6.0\Contracts.dll
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\bin\Debug\net6.0\Entities.dll
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\bin\Debug\net6.0\Contracts.pdb
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\bin\Debug\net6.0\Entities.pdb
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\Repository.csproj.AssemblyReference.cache
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\Repository.GeneratedMSBuildEditorConfig.editorconfig
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\Repository.AssemblyInfoInputs.cache
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\Repository.AssemblyInfo.cs
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\Repository.csproj.CoreCompileInputs.cache
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\Repository.csproj.CopyComplete
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\Repository.dll
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\refint\Repository.dll
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\Repository.pdb
+D:\Учеба\Work\Projects\HeadHunterAnalyzer\HeadHunterAnalyzer.API\Repository\obj\Debug\net6.0\ref\Repository.dll

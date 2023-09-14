@@ -1,7 +1,9 @@
 using Contracts.DataServices;
+using Contracts.HeadHunter;
 using Contracts.Logger;
 using HeadHunterAnalyzer.API.Extensions;
 using HeadHunterAnalyzer.API.Filters;
+using HeadHunterScrapingService;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using Repository;
@@ -26,7 +28,12 @@ builder.Services.ConfigureSwagger();
 
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
-builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IHeadHunterService, HeadHunterService>();
+
+builder.Services.AddControllers().AddNewtonsoftJson(opts =>
+	opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 var app = builder.Build();
 
@@ -38,7 +45,7 @@ app.UseSwaggerUI(setupAction => {
 	setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "HeadHunterAnalyzer v1");
 });
 
-app.ConfigureExceptionHandler(app.Services.GetRequiredService<ILoggerManager>());
+app.ConfigureExceptionHandler(app.Services.CreateScope().ServiceProvider.GetRequiredService<ILoggerManager>());
 app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
