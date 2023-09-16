@@ -5,10 +5,14 @@
 	/// </summary>
 	public abstract class VacancyParsingException : Exception {
 
-		public VacancyParsingException(string? message) : base(message) {
+		public int HeadHunterId { get; set; }
+
+		public VacancyParsingException(string? message, int headHunterId) : base(message) {
+			HeadHunterId = headHunterId;
 		}
 
-		public VacancyParsingException(string? message, Exception? innerException) : base(message, innerException) {
+		public VacancyParsingException(string? message, Exception? innerException, int headHunterId) : base(message, innerException) {
+			HeadHunterId = headHunterId;
 		}
 	}
 }

@@ -1,6 +1,8 @@
-﻿using AngleSharp.Html.Dom;
+﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using Contracts.HeadHunter;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using HeadHunterScrapingService.Exceptions;
 using System.Net;
@@ -10,6 +12,8 @@ namespace HeadHunterScrapingService {
 	public class HeadHunterService : IHeadHunterService {
 
 		private readonly HeadHunterHttpClient _httpClient;
+
+		private int _headHunterId = -1;
 
 		private Exception? _error;
 
@@ -21,7 +25,7 @@ namespace HeadHunterScrapingService {
 				
 				if (_parsedPage == null) {
 
-					throw new NullParsedDocumentException("No parsed page in object storage. Use LoadVacancyAsync first");
+					throw new NullParsedDocumentException("No parsed page in object storage. Use LoadVacancyAsync first", _headHunterId);
 				}
 
 				return _parsedPage;
@@ -62,7 +66,7 @@ namespace HeadHunterScrapingService {
 
 			if (companyNameNode == null) {
 
-				throw new NodeNotFoundException("Node with attribute vacancy-company-name not found in parsed page.");
+				throw new NodeNotFoundException("Node with attribute vacancy-company-name not found in parsed page.", _headHunterId);
 			}
 
 			string name = companyNameNode.TextContent;
@@ -72,7 +76,7 @@ namespace HeadHunterScrapingService {
 
 			if (string.IsNullOrEmpty(href)) {
 
-				throw new AttributeNotFoundException("Attribute href not found in company name node.", "href");
+				throw new AttributeNotFoundException("Attribute href not found in company name node.", "href", _headHunterId);
 			}
 
 			string? idString = string.Concat(href.Where(symb => Char.IsDigit(symb)));
@@ -81,7 +85,7 @@ namespace HeadHunterScrapingService {
 
 			if (string.IsNullOrEmpty(idString) || !int.TryParse(idString, out id)) {
 
-				throw new IdNotFoundExeption("Id not found in href of company name node");
+				throw new IdNotFoundExeption("Id not found in href of company name node", _headHunterId);
 			}
 
 			return new Company { HeadHunterId = id, Name = name };			
@@ -96,16 +100,39 @@ namespace HeadHunterScrapingService {
 
 			CheckErrors();
 
-			var vacancyNameNode = ParsedPage.All.First(node => node.Attributes["data-qa"]?.Value == "vacancy-title");
+			return new Vacancy { Name = GetVacancyName(), HeadHunterId = _headHunterId };
+		}
+
+		public VacancyData GetVacancyData() {
+
+			CheckErrors();
+
+			var vacancyExpNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-experience");
+
+			var vacancyDescriptionNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-description");
+
+			if (vacancyDescriptionNode == null) {
+
+				throw new NodeNotFoundException("Node with attribute vacancy-description not found in parsed page.", _headHunterId);
+			}
+
+			string body = vacancyDescriptionNode.Html();
+			string? exp = vacancyExpNode?.TextContent;
+			string name = GetVacancyName();
+
+			return new VacancyData { Body = body, Name = name, Experience = exp };
+		}
+
+		private string GetVacancyName() {
+
+			var vacancyNameNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-title");
 
 			if (vacancyNameNode == null) {
 
-				throw new NodeNotFoundException("Node with attribute vacancy-title not found in parsed page.");
+				throw new NodeNotFoundException("Node with attribute vacancy-title not found in parsed page.", _headHunterId);
 			}
 
-			string name = vacancyNameNode.TextContent;
-
-			return new Vacancy { Name = name };
+			return vacancyNameNode.TextContent;
 		}
 
 		/// <summary>
@@ -122,6 +149,8 @@ namespace HeadHunterScrapingService {
 			Stream pageData;
 			_error = null;
 
+			_headHunterId = headHunterId;
+
 			try {
 
 				pageData = await _httpClient.GetVacancyData(headHunterId);
@@ -130,7 +159,7 @@ namespace HeadHunterScrapingService {
 
 				if (ex.StatusCode == HttpStatusCode.NotFound) {
 
-					_error = new VacancyNotFoundException($"Vacancy with id {headHunterId} not exists");
+					_error = new VacancyNotFoundException($"Vacancy with id {headHunterId} not exists", headHunterId);
 
 					throw _error;
 				}
@@ -146,7 +175,7 @@ namespace HeadHunterScrapingService {
 
 			if (document == null) {
 
-				_error = new NullParsedDocumentException($"Parsed HTML document for HH id {headHunterId} got null value");
+				_error = new NullParsedDocumentException($"Parsed HTML document for HH id {headHunterId} got null value", headHunterId);
 
 				throw _error;
 			}

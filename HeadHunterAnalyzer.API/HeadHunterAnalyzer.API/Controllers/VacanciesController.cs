@@ -6,7 +6,6 @@ using Entities.DataTransferObjects;
 using Entities.ErrorModel;
 using Entities.Models;
 using HeadHunterAnalyzer.API.Filters;
-using HeadHunterScrapingService.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HeadHunterAnalyzer.API.Controllers {
@@ -77,48 +76,96 @@ namespace HeadHunterAnalyzer.API.Controllers {
 				return BadRequest(new ErrorDetails() { StatusCode = StatusCodes.Status400BadRequest, Message = $"Вакасия с ид {vacancyData.HeadHunterId} уже существует." });
 			}
 
-			// Загрузка страницы, что будет парсится дальше.
-			try {
-
-				await _hhService.LoadVacancyAsync(vacancyData.HeadHunterId);
-
-			} catch (VacancyParsingException parsingException) {
-
-				_logger.LogError($"Ошибка парсинга вакансии с ид {vacancyData.HeadHunterId}: {parsingException.Message}");
-				return StatusCode(StatusCodes.Status500InternalServerError, new ErrorDetails {
-
-					StatusCode = StatusCodes.Status500InternalServerError,
-					Message = $"Произошла ошибка при парсинге вакансии с ид {vacancyData.HeadHunterId}. " +
-						$"Проверьте переданный ид на правильность или свяжитесь с разработчиком."
-				});
-			}
+			await _hhService.LoadVacancyAsync(vacancyData.HeadHunterId);
 
 			// Получение данных о предприятися со страницы вакансии.
 			Company companyFromPage = _hhService.GetCompany();
-			
-			// Проверка существования компании в БД.
-			Company? companyEntity = await _repositoryManager.Companies
-				.GetCompanyByHhIdAsync(companyFromPage.HeadHunterId, trackChanges: false);
-
-			if (companyEntity == null) {
-
-				companyEntity = companyFromPage;
-			}
 
 			// Получение данных о вакансии со страницы вакансии.
 			vacancy = _hhService.GetVacancy();
 
+
+
+			// Проверка существования компании в БД.
+			Company? companyEntity = await _repositoryManager.Companies
+				.GetCompanyByHhIdAsync(companyFromPage.HeadHunterId, trackChanges: true);
+
+			if (companyEntity == null) {
+
+				vacancy.Company = companyFromPage;
+
+			} else {
+
+				companyEntity.Vacancies.Add(vacancy);
+			}
+
+
+
 			List<Word> words = _mapper.Map<IEnumerable<Word>>(vacancyData.Words).ToList();
 
-			vacancy.HeadHunterId = vacancyData.HeadHunterId;
-			vacancy.Words = words;
-			vacancy.Company = companyEntity;
+			IEnumerable<string> wordValues = words.Select(word => word.Value);
+			IEnumerable<Word> existingWords = await _repositoryManager.Words.GetWordsByValuesAsync(wordValues, trackChanges: true);
+
+			IEnumerable<Word> newWords = words.Where(word =>
+				!existingWords.Select(exWord => exWord.Value).Contains(word.Value));
+
+			foreach (var word in newWords) {
+
+				// _repositoryManager.Words.CreateWord(word);
+				vacancy.Words.Add(word);
+			}
+
+			foreach (var word in existingWords)
+				word.Vacancies.Add(vacancy);
+
+
+
 
 			_repositoryManager.Vacancies.CreateVacancy(vacancy);
 
 			await _repositoryManager.SaveAsync();
 
 			return Ok("Вакансия сохранена успешно.");
+		}
+
+		/// <summary>
+		/// Возвращает данные по вакансии.
+		/// </summary>
+		/// <param name="headHunterId">Ид вакансии на ХХ.</param>
+		/// <returns>Данные вакансии</returns>
+		[HttpGet("{headHunterId}")]
+		public async Task<IActionResult> AnalyzeVacancy(int headHunterId) {
+
+			await _hhService.LoadVacancyAsync(headHunterId);
+
+
+			AnalyzedVacancyDto result = new AnalyzedVacancyDto();
+
+
+			VacancyData vacancyData = _hhService.GetVacancyData();
+			result.VacancyData = vacancyData;
+
+
+			Company company = _hhService.GetCompany();
+			result.Company = _mapper.Map<AnalyzedCompanyDto>(company);
+
+
+			Vacancy? vacancyEntity = await _repositoryManager.Vacancies.GetVacancyAsync(headHunterId, trackChanges: false);
+
+			if (vacancyEntity == null) {
+
+				result.AlreadyAnalyzed = false;
+				return Ok(result);
+
+			}
+
+
+			result.AlreadyAnalyzed = true;
+
+			IEnumerable<Word> words = await _repositoryManager.Words.GetWordsByVacancyIdAsync(vacancyEntity.Id, trackChanges: false);
+			result.Words = _mapper.Map<IEnumerable<WordDto>>(words);
+
+			return Ok(result);
 		}
 	}
 }

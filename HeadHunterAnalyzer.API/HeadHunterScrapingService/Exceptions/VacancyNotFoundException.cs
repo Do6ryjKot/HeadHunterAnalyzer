@@ -5,7 +5,7 @@
 	/// </summary>
 	public class VacancyNotFoundException : VacancyParsingException {
 
-		public VacancyNotFoundException(string? message) : base(message) {
+		public VacancyNotFoundException(string? message, int headHunterId) : base(message, headHunterId) {
 		}
 	}
 }

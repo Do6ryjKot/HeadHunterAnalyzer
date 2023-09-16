@@ -5,8 +5,8 @@
 	/// </summary>
 	public class NodeNotFoundException : VacancyParsingException {
 
-		public NodeNotFoundException(string? message) : base(message) { }
+		public NodeNotFoundException(string? message, int headHunterId) : base(message, headHunterId) { }
 
-		public NodeNotFoundException(string? message, Exception? innerException) : base(message, innerException) { }
+		public NodeNotFoundException(string? message, Exception? innerException, int headHunterId) : base(message, headHunterId) { }
 	}
 }

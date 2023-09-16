@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Entities.DataTransferObjects;
+using Entities.Models;
 
 namespace Contracts.HeadHunter {
 	
@@ -10,5 +11,6 @@ namespace Contracts.HeadHunter {
 		public Task LoadVacancyAsync(int headHunterId);
 		public Company GetCompany();
 		public Vacancy GetVacancy();
+		public VacancyData GetVacancyData();
 	}
 }

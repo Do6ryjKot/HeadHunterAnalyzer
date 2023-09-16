@@ -5,8 +5,8 @@
 	/// </summary>
 	public class IdNotFoundExeption : VacancyParsingException {
 
-		public IdNotFoundExeption(string? message) : base(message) { }
+		public IdNotFoundExeption(string? message, int headHunterId) : base(message, headHunterId) { }
 
-		public IdNotFoundExeption(string? message, Exception? innerException) : base(message, innerException) { }
+		public IdNotFoundExeption(string? message, Exception? innerException, int headHunterId) : base(message, headHunterId) { }
 	}
 }
