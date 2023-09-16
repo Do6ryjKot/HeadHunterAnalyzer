@@ -8,11 +8,11 @@ namespace HeadHunterScrapingService.Exceptions {
 
 		public string AtributeName { get; }
 
-		public AttributeNotFoundException(string? message, string atributeName) : base(message) {
+		public AttributeNotFoundException(string? message, string atributeName, int headHunterId) : base(message, headHunterId) {
 			AtributeName = atributeName;
 		}
 
-		public AttributeNotFoundException(string? message, Exception? innerException, string atributeName) : base(message, innerException) {
+		public AttributeNotFoundException(string? message, Exception? innerException, string atributeName, int headHunterId) : base(message, headHunterId) {
 			AtributeName = atributeName;
 		}
 	}

@@ -6,10 +6,10 @@ namespace HeadHunterScrapingService.Exceptions {
 	/// </summary>
 	public class NullParsedDocumentException : VacancyParsingException {
 
-		public NullParsedDocumentException(string? message) : base(message) {
+		public NullParsedDocumentException(string? message, int headHunterId) : base(message, headHunterId) {
 		}
 
-		public NullParsedDocumentException(string? message, Exception? innerException) : base(message, innerException) {
+		public NullParsedDocumentException(string? message, Exception? innerException, int headHunterId) : base(message, headHunterId) {
 		}
 	}
 }

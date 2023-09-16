@@ -10,6 +10,9 @@ namespace HeadHunterAnalyzer.API.Mapping {
 
 			CreateMap<VacancyForCreationDto, Vacancy>();
 			CreateMap<WordForCreationDto, Word>();
+
+			CreateMap<Company, AnalyzedCompanyDto>();
+			CreateMap<Word, WordDto>();
 		}
 	}
 }
