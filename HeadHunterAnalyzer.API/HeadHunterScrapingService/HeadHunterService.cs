@@ -5,6 +5,7 @@ using Contracts.HeadHunter;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using HeadHunterScrapingService.Exceptions;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Net;
 
 namespace HeadHunterScrapingService {
@@ -109,12 +110,7 @@ namespace HeadHunterScrapingService {
 
 			var vacancyExpNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-experience");
 
-			var vacancyDescriptionNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-description");
-
-			if (vacancyDescriptionNode == null) {
-
-				throw new NodeNotFoundException("Node with attribute vacancy-description not found in parsed page.", _headHunterId);
-			}
+			var vacancyDescriptionNode = GetVacancyDescriptionNode();
 
 			string body = vacancyDescriptionNode.Html();
 			string? exp = vacancyExpNode?.TextContent;
@@ -133,6 +129,33 @@ namespace HeadHunterScrapingService {
 			}
 
 			return vacancyNameNode.TextContent;
+		}
+
+		public IEnumerable<string> GetVacancyWords() {
+
+			CheckErrors();
+
+			var vacancyDescriptionNode = GetVacancyDescriptionNode();
+
+			string body = vacancyDescriptionNode.TextContent;
+
+			List<string> words = body
+				.Split(' ', '\t', ':', ',', '.')
+				.Where(word => !string.IsNullOrEmpty(word)).ToList();
+
+			return words;
+		}
+
+		private IElement GetVacancyDescriptionNode() {
+
+			var vacancyDescriptionNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-description");
+
+			if (vacancyDescriptionNode == null) {
+
+				throw new NodeNotFoundException("Node with attribute vacancy-description not found in parsed page.", _headHunterId);
+			}
+
+			return vacancyDescriptionNode;
 		}
 
 		/// <summary>

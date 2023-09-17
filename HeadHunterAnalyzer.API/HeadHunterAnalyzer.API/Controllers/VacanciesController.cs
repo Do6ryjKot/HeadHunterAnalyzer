@@ -150,19 +150,25 @@ namespace HeadHunterAnalyzer.API.Controllers {
 			result.Company = _mapper.Map<AnalyzedCompanyDto>(company);
 
 
+			IEnumerable<Word> words;
+
 			Vacancy? vacancyEntity = await _repositoryManager.Vacancies.GetVacancyAsync(headHunterId, trackChanges: false);
 
 			if (vacancyEntity == null) {
 
 				result.AlreadyAnalyzed = false;
-				return Ok(result);
 
+				List<string> vacancyWords = _hhService.GetVacancyWords().ToList();
+				words = await _repositoryManager.Words.GetWordsByValuesAsync(vacancyWords, trackChanges: false);
+
+			} else { 
+			
+				result.AlreadyAnalyzed = true;
+
+				words = await _repositoryManager.Words.GetWordsByVacancyIdAsync(vacancyEntity.Id, trackChanges: false);
 			}
 
-
-			result.AlreadyAnalyzed = true;
-
-			IEnumerable<Word> words = await _repositoryManager.Words.GetWordsByVacancyIdAsync(vacancyEntity.Id, trackChanges: false);
+			
 			result.Words = _mapper.Map<IEnumerable<WordDto>>(words);
 
 			return Ok(result);

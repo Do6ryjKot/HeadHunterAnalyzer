@@ -12,5 +12,6 @@ namespace Contracts.HeadHunter {
 		public Company GetCompany();
 		public Vacancy GetVacancy();
 		public VacancyData GetVacancyData();
+		public IEnumerable<string> GetVacancyWords();
 	}
 }
