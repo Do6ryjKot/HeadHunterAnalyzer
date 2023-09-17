@@ -11,6 +11,8 @@ namespace Repository {
 
 		public void CreateWord(Word word) => Create(word);
 
+		public async Task<IEnumerable<Word>> GetAllWords(bool trackChanges) => await FindAll(trackChanges).ToListAsync();
+
 		public async Task<IEnumerable<Word>> GetWordsByVacancyIdAsync(Guid vacancyId, bool trackChanges) =>
 			await FindByCondition(word => word.Vacancies.Any(vacancy => vacancy.Id == vacancyId), trackChanges).ToListAsync();
 

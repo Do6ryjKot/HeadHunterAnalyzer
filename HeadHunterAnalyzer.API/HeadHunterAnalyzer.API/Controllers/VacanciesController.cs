@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HeadHunterAnalyzer.API.Controllers {
 
-	[Route("api/vacancy")]
+	[Route("api/vacancies")]
 	[ApiController]
 	public class VacanciesController : Controller {
 
