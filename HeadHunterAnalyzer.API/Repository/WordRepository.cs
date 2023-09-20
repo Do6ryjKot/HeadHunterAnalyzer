@@ -1,5 +1,6 @@
 ﻿using Contracts.DataServices;
 using Entities;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,5 +19,9 @@ namespace Repository {
 
 		public async Task<IEnumerable<Word>> GetWordsByValuesAsync(IEnumerable<string> values, bool trackChanges) =>
 			await FindByCondition(word => values.Contains(word.Value), trackChanges).ToListAsync();
+
+		public async Task<IEnumerable<WordOccurrencesDto>> GetAllWordsOccurrences() =>
+			await FindAll(false).Select(word => 
+				new WordOccurrencesDto { Id = word.Id, Value = word.Value, Occurrences = word.Vacancies.Count() }).ToListAsync();
 	}
 }

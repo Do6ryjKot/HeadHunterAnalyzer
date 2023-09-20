@@ -2,7 +2,6 @@
 using Contracts.DataServices;
 using Contracts.Logger;
 using Entities.DataTransferObjects;
-using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HeadHunterAnalyzer.API.Controllers {
@@ -28,9 +27,7 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		[HttpGet]
 		public async Task<IActionResult> GetAllWords() {
 
-			IEnumerable<Word> words = await _repositoryManager.Words.GetAllWords(trackChanges: false);
-
-			IEnumerable<WordDto> result = _mapper.Map<IEnumerable<WordDto>>(words);
+			IEnumerable<WordOccurrencesDto> result = await _repositoryManager.Words.GetAllWordsOccurrences();
 
 			return Ok(result);
 		}
