@@ -5,8 +5,10 @@ using Contracts.HeadHunter;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using HeadHunterScrapingService.Exceptions;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Net;
+using System.Runtime.CompilerServices;
 
 namespace HeadHunterScrapingService {
 
@@ -110,14 +112,19 @@ namespace HeadHunterScrapingService {
 
 			var vacancyExpNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-experience");
 
-			var vacancyDescriptionNode = GetVacancyDescriptionNode();
+			//var vacancyDescriptionNode = GetVacancyDescriptionNode();
 
-			string body = vacancyDescriptionNode.Html();
+			//string body = vacancyDescriptionNode.Html();
+
+			string body = GenerateVacancyDocument(GetVacancyDescriptionNode());
 			string? exp = vacancyExpNode?.TextContent;
 			string name = GetVacancyName();
 
 			return new VacancyData { Body = body, Name = name, Experience = exp };
 		}
+
+		private string GenerateVacancyDocument(IElement descriptionNode) => 
+			$"<html><head><meta charset=\"utf-8\" /></head><body>{descriptionNode.Html()}</body></html>";
 
 		private string GetVacancyName() {
 
