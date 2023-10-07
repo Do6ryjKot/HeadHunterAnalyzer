@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 
-namespace Entities.ErrorModel {
+namespace Entities.InformationModel {
 	
-	public class ErrorDetails {
+	public class ResultDetails {
 
 		public int StatusCode { get; set; }
 		public string Message { get; set; }

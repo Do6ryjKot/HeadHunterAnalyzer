@@ -3,7 +3,7 @@ using Contracts.DataServices;
 using Contracts.HeadHunter;
 using Contracts.Logger;
 using Entities.DataTransferObjects;
-using Entities.ErrorModel;
+using Entities.InformationModel;
 using Entities.Models;
 using HeadHunterAnalyzer.API.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -73,7 +73,7 @@ namespace HeadHunterAnalyzer.API.Controllers {
 			if (vacancy != null) {
 
 				_logger.LogError($"Вакасия с ид {vacancyData.HeadHunterId} уже существует.");
-				return BadRequest(new ErrorDetails() { StatusCode = StatusCodes.Status400BadRequest, Message = $"Вакасия с ид {vacancyData.HeadHunterId} уже существует." });
+				return BadRequest(new ResultDetails() { StatusCode = StatusCodes.Status400BadRequest, Message = $"Вакасия с ид {vacancyData.HeadHunterId} уже существует." });
 			}
 
 			await _hhService.LoadVacancyAsync(vacancyData.HeadHunterId);
@@ -125,7 +125,7 @@ namespace HeadHunterAnalyzer.API.Controllers {
 
 			await _repositoryManager.SaveAsync();
 
-			return Ok("Вакансия сохранена успешно.");
+			return Ok(new ResultDetails { StatusCode = StatusCodes.Status200OK, Message = "Вакансия сохранена успешно." });
 		}
 
 		/// <summary>

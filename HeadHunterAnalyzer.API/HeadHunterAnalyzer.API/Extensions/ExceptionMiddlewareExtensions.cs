@@ -1,5 +1,5 @@
 ﻿using Contracts.Logger;
-using Entities.ErrorModel;
+using Entities.InformationModel;
 using HeadHunterScrapingService.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
@@ -28,7 +28,7 @@ namespace HeadHunterAnalyzer.API.Extensions {
 						VacancyParsingException exeption = contextFeature.Error as VacancyParsingException;
 
 						logger.LogError($"Ошибка парсинга вакансии с ид {exeption.HeadHunterId}: {exeption.Message}");
-						await context.Response.WriteAsync(new ErrorDetails {
+						await context.Response.WriteAsync(new ResultDetails {
 
 							StatusCode = context.Response.StatusCode, //StatusCodes.Status500InternalServerError,
 							Message = $"Произошла ошибка при парсинге вакансии с ид {exeption.HeadHunterId}. " +
@@ -42,7 +42,7 @@ namespace HeadHunterAnalyzer.API.Extensions {
 					// Если это какая-либо другая ошибка
 					logger.LogError($"Something went wrong: {contextFeature.Error}");
 
-					await context.Response.WriteAsync(new ErrorDetails() {
+					await context.Response.WriteAsync(new ResultDetails() {
 
 						StatusCode = context.Response.StatusCode,
 						Message = "Internal Server Error."
