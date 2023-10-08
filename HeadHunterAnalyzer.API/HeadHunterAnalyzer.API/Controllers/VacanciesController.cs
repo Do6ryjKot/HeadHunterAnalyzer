@@ -20,38 +20,11 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		private readonly IHeadHunterService _hhService;
 
 		public VacanciesController(IMapper mapper, ILoggerManager logger, IRepositoryManager repositoryManager, IHeadHunterService hhService) {
+
 			_mapper = mapper;
 			_logger = logger;
 			_repositoryManager = repositoryManager;
 			_hhService = hhService;
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> LoadTestData() {
-
-			Company company = new Company {
-				HeadHunterId = 111111111,
-				Name = "Test Company"
-			};
-
-			_repositoryManager.Companies.CreateCompany(company);
-
-			Vacancy vacancy = new Vacancy {
-
-				HeadHunterId = 123123123,
-				Name = "Test Vacancy",
-				Company = company,
-				Words = new List<Word> { 
-					
-					new Word { Value = ".NET" }
-				}
-			};
-
-			_repositoryManager.Vacancies.CreateVacancy(vacancy);
-
-			await _repositoryManager.SaveAsync();
-
-			return Ok(vacancy);
 		}
 
 		/// <summary>
@@ -63,6 +36,7 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		/// <response code="400">Если параметр null.</response>
 		/// <response code="422">Если параметр не прошел валидацию.</response>
 		/// <response code="500">Произошла ошибка при парсинге вакансии с ид id. Проверьте переданный ид на правильность или свяжитесь с разработчиком.</response>
+		/// <response code="500">Неизвестная ошибка.</response>
 		[HttpPost]
 		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<IActionResult> SaveAnalyzedVacancy([FromBody] VacancyForCreationDto vacancyData) {
@@ -73,7 +47,7 @@ namespace HeadHunterAnalyzer.API.Controllers {
 			if (vacancy != null) {
 
 				_logger.LogError($"Вакасия с ид {vacancyData.HeadHunterId} уже существует.");
-				return BadRequest(new ResultDetails() { StatusCode = StatusCodes.Status400BadRequest, Message = $"Вакасия с ид {vacancyData.HeadHunterId} уже существует." });
+				return BadRequest(new ResultDetails { StatusCode = StatusCodes.Status400BadRequest, Message = $"Вакасия с ид {vacancyData.HeadHunterId} уже существует." });
 			}
 
 			await _hhService.LoadVacancyAsync(vacancyData.HeadHunterId);
@@ -132,6 +106,10 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		/// Возвращает данные по вакансии.
 		/// </summary>
 		/// <param name="headHunterId">Ид вакансии на ХХ.</param>
+		/// <response code="200">Данные вакансии</response>
+		/// <response code="400">Вакансия находится в архиве.</response>
+		/// <response code="500">Произошла ошибка при парсинге вакансии с ид id. Проверьте переданный ид на правильность или свяжитесь с разработчиком.</response>
+		/// <response code="500">Неизвестная ошибка.</response>
 		/// <returns>Данные вакансии</returns>
 		[HttpGet("{headHunterId}")]
 		public async Task<IActionResult> AnalyzeVacancy(int headHunterId) {

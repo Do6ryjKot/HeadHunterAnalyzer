@@ -6,9 +6,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using HeadHunterScrapingService.Exceptions;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Net;
-using System.Runtime.CompilerServices;
 
 namespace HeadHunterScrapingService {
 
@@ -18,14 +16,16 @@ namespace HeadHunterScrapingService {
 
 		private int _headHunterId = -1;
 
+		// Возникшие ошибки при парсинге.
 		private Exception? _error;
 
-		private IHtmlDocument? _parsedPage;
+		#region Хранилище страницы
 
+		private IHtmlDocument? _parsedPage;
 		private IHtmlDocument ParsedPage {
 
-			get { 
-				
+			get {
+
 				if (_parsedPage == null) {
 
 					throw new NullParsedDocumentException("No parsed page in object storage. Use LoadVacancyAsync first", _headHunterId);
@@ -37,6 +37,7 @@ namespace HeadHunterScrapingService {
 			set => _parsedPage = value;
 		}
 
+		#endregion
 
 		public HeadHunterService() {
 
@@ -44,7 +45,7 @@ namespace HeadHunterScrapingService {
 		}
 
 		/// <summary>
-		/// Проверка наличия ошибок при загрузки страницы
+		/// Проверка наличия ошибок при загрузки страницы.
 		/// </summary>
 		private void CheckErrors() {
 
@@ -52,11 +53,12 @@ namespace HeadHunterScrapingService {
 				throw _error;
 		}
 
+		#region Данные компаний
+
 		/// <summary>
 		/// Получение данных о компании из хранимой спаршенной страницы.
 		/// </summary>
 		/// <returns>Данные компании</returns>
-		/// <exception cref="NullParsedDocumentException">Никакая страница до этого не была спаршена.</exception>
 		/// <exception cref="NodeNotFoundException">Узел названия компании не найден.</exception>
 		/// <exception cref="AttributeNotFoundException">Узел с названием комании не содержит атрибут href.</exception>
 		/// <exception cref="IdNotFoundExeption">Ид не был найден в значении атрибута href.</exception>
@@ -91,41 +93,28 @@ namespace HeadHunterScrapingService {
 				throw new IdNotFoundExeption("Id not found in href of company name node", _headHunterId);
 			}
 
-			return new Company { HeadHunterId = id, Name = name };			
+			return new Company { HeadHunterId = id, Name = name };
 		}
+
+
+		#endregion
+
+
+		#region Работа с документом
 
 		/// <summary>
-		/// Получение данных о вакансии из хранимой спаршенной страницы.
+		/// Генерирует тело описания вакансии.
 		/// </summary>
-		/// <returns>Данные вакансии</returns>
-		/// <exception cref="NodeNotFoundException">Узел названия вакансии не найден.</exception>
-		public Vacancy GetVacancy() {
-
-			CheckErrors();
-
-			return new Vacancy { Name = GetVacancyName(), HeadHunterId = _headHunterId };
-		}
-
-		public VacancyData GetVacancyData() {
-
-			CheckErrors();
-
-			var vacancyExpNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-experience");
-
-			//var vacancyDescriptionNode = GetVacancyDescriptionNode();
-
-			//string body = vacancyDescriptionNode.Html();
-
-			string body = GenerateVacancyDocument(GetVacancyDescriptionNode());
-			string? exp = vacancyExpNode?.TextContent;
-			string name = GetVacancyName();
-
-			return new VacancyData { Body = body, Name = name, Experience = exp };
-		}
-
-		private string GenerateVacancyDocument(IElement descriptionNode) => 
+		/// <param name="descriptionNode">Узел с описанием вакансии.</param>
+		/// <returns></returns>
+		private string GenerateVacancyDocument(IElement descriptionNode) =>
 			$"<html><head><meta charset=\"utf-8\" /></head><body>{descriptionNode.Html()}</body></html>";
 
+		/// <summary>
+		/// Получение названия вакансии.
+		/// </summary>
+		/// <returns>Название вакансии.</returns>
+		/// <exception cref="NodeNotFoundException">Узел не найден.</exception>
 		private string GetVacancyName() {
 
 			var vacancyNameNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-title");
@@ -138,9 +127,66 @@ namespace HeadHunterScrapingService {
 			return vacancyNameNode.TextContent;
 		}
 
+		/// <summary>
+		/// Выделить из документа узел описания вакансии.
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="NodeNotFoundException"></exception>
+		private IElement GetVacancyDescriptionNode() {
+
+			var vacancyDescriptionNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-description");
+
+			if (vacancyDescriptionNode == null) {
+
+				throw new NodeNotFoundException("Node with attribute vacancy-description not found in parsed page.", _headHunterId);
+			}
+
+			return vacancyDescriptionNode;
+		}
+
+
+		#endregion
+
+
+		#region Вакансии
+
+		/// <summary>
+		/// Получение минимальных данных о вакансии (название и ид вакансии).
+		/// </summary>
+		/// <returns>Данные вакансии</returns>
+		public Vacancy GetVacancy() {
+
+			CheckErrors();
+
+			return new Vacancy { Name = GetVacancyName(), HeadHunterId = _headHunterId };
+		}
+
+		/// <summary>
+		/// Получение названия, описания и опыт работы вакансии.
+		/// </summary>
+		/// <returns></returns>
+		public VacancyData GetVacancyData() {
+
+			CheckErrors();
+			CheckArchiveVacancy();
+
+			var vacancyExpNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-experience");
+
+			string body = GenerateVacancyDocument(GetVacancyDescriptionNode());
+			string? exp = vacancyExpNode?.TextContent;
+			string name = GetVacancyName();
+
+			return new VacancyData { Body = body, Name = name, Experience = exp };
+		}
+
+		/// <summary>
+		/// Разбивает описание вакансии на слова.
+		/// </summary>
+		/// <returns>Набор слов.</returns>
 		public IEnumerable<string> GetVacancyWords() {
 
 			CheckErrors();
+			CheckArchiveVacancy();
 
 			var vacancyDescriptionNode = GetVacancyDescriptionNode();
 
@@ -153,17 +199,22 @@ namespace HeadHunterScrapingService {
 			return words;
 		}
 
-		private IElement GetVacancyDescriptionNode() {
+		/// <summary>
+		/// Проверка находится ли вкаансия в архиве.
+		/// </summary>
+		/// <exception cref="ArchivedVacancyException">Вакансия находится в архиве.</exception>
+		private void CheckArchiveVacancy() {
 
-			var vacancyDescriptionNode = ParsedPage.All.FirstOrDefault(node => node.Attributes["data-qa"]?.Value == "vacancy-description");
+			var node = ParsedPage.All.FirstOrDefault(node => node.Attributes["class"]?.Value == "vacancy-archive-description");
 
-			if (vacancyDescriptionNode == null) {
+			if (node != null) {
 
-				throw new NodeNotFoundException("Node with attribute vacancy-description not found in parsed page.", _headHunterId);
+				throw new ArchivedVacancyException("Вакансия находится в архиве.", _headHunterId);
 			}
-
-			return vacancyDescriptionNode;
 		}
+
+		#endregion
+
 
 		/// <summary>
 		/// Загрузка страницы, из которой необходимо далее получать данные.
