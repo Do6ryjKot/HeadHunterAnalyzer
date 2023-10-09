@@ -1,5 +1,6 @@
 ﻿using Contracts.Logger;
 using Entities;
+using HeadHunterScrapingService;
 using LoggerService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -61,6 +62,16 @@ namespace HeadHunterAnalyzer.API.Extensions {
 				var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 				var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 				setupAction.IncludeXmlComments(xmlPath);
+			});
+
+		/// <summary>
+		/// Настройка используемых HTTP клиентов.
+		/// </summary>
+		/// <param name="services"></param>
+		public static void ConfigureHttpClients(this IServiceCollection services) =>
+			services.AddHttpClient<HeadHunterHttpClient>(client => { 
+				
+				client.BaseAddress = new Uri("https://hh.ru");
 			});
 	}
 }

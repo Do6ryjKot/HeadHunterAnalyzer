@@ -1,13 +1,15 @@
 ﻿namespace HeadHunterScrapingService {
 	
-	public class HeadHunterHttpClient : HttpClient {
+	public class HeadHunterHttpClient {
 
-		public HeadHunterHttpClient() {
+		private readonly HttpClient _client;
 
-			BaseAddress = new Uri("https://hh.ru");
+		public HeadHunterHttpClient(HttpClient client) {
+
+			_client = client;
 		}
 
 		public async Task<Stream> GetVacancyData(int headHunterId) => 
-			await GetStreamAsync($"vacancy/{headHunterId}");
+			await _client.GetStreamAsync($"vacancy/{headHunterId}");
 	}
 }

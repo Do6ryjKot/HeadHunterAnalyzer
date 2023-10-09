@@ -18,6 +18,8 @@ builder.Services.ConfigureCors();
 builder.Services.CofigureIisIntegration();
 builder.Services.ConfigureLoggerService();
 
+builder.Services.ConfigureHttpClients();
+
 builder.Services.ConfigureSqlContext(builder.Configuration);
 
 builder.Services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = true);

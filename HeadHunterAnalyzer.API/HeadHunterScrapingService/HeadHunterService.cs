@@ -39,9 +39,9 @@ namespace HeadHunterScrapingService {
 
 		#endregion
 
-		public HeadHunterService() {
+		public HeadHunterService(HeadHunterHttpClient httpClient) {
 
-			_httpClient = new HeadHunterHttpClient();
+			_httpClient = httpClient;
 		}
 
 		/// <summary>
