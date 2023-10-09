@@ -17,8 +17,12 @@ namespace Repository {
 		public async Task<IEnumerable<Word>> GetWordsByVacancyIdAsync(Guid vacancyId, bool trackChanges) =>
 			await FindByCondition(word => word.Vacancies.Any(vacancy => vacancy.Id == vacancyId), trackChanges).ToListAsync();
 
-		public async Task<IEnumerable<Word>> GetWordsByValuesAsync(IEnumerable<string> values, bool trackChanges) =>
-			await FindByCondition(word => values.Contains(word.Value), trackChanges).ToListAsync();
+		public async Task<IEnumerable<Word>> GetWordsByValuesAsync(IEnumerable<string> values, bool trackChanges) {
+
+			var lowerCaseValues = values.Select(value => value.ToLower());
+
+			return await FindByCondition(word => lowerCaseValues.Contains(word.Value.ToLower()), trackChanges).ToListAsync();
+		}
 
 		public async Task<IEnumerable<WordOccurrencesDto>> GetAllWordsOccurrences() =>
 			await FindAll(false).Select(word => 
