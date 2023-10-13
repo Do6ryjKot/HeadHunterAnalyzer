@@ -151,5 +151,15 @@ namespace HeadHunterAnalyzer.API.Controllers {
 
 			return Ok(result);
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetAllAnalyzedVacancies() {
+
+			var vacanciesEntities = await _repositoryManager.Vacancies.GetAllVacancies(trackChanges: false);
+
+			var vacanciesDto = _mapper.Map<IEnumerable<VacancyDto>>(vacanciesEntities);
+
+			return Ok(vacanciesDto);
+		}
 	}
 }

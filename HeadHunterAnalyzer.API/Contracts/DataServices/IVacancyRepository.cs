@@ -3,12 +3,12 @@
 namespace Contracts.DataServices {
 
 	/// <summary>
-	/// Репозиторий вакансий
+	/// Репозиторий вакансий.
 	/// </summary>
 	public interface IVacancyRepository {
 
 		/// <summary>
-		/// Получение вакансии по её ид на HH
+		/// Получение вакансии по её ид на HH.
 		/// </summary>
 		/// <param name="headHunterId"></param>
 		/// <param name="trackChanges"></param>
@@ -16,5 +16,12 @@ namespace Contracts.DataServices {
 		public Task<Vacancy?> GetVacancyAsync(int headHunterId, bool trackChanges);
 
 		public void CreateVacancy(Vacancy vacancy);
+
+		/// <summary>
+		/// Получить все анализированные вакансии.
+		/// </summary>
+		/// <param name="trackChanges"></param>
+		/// <returns></returns>
+		public Task<IEnumerable<Vacancy>> GetAllVacancies(bool trackChanges);
 	}
 }
