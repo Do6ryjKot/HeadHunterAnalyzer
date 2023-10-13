@@ -5,8 +5,10 @@ using Contracts.Logger;
 using Entities.DataTransferObjects;
 using Entities.InformationModel;
 using Entities.Models;
+using Entities.RequestFeatures;
 using HeadHunterAnalyzer.API.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HeadHunterAnalyzer.API.Controllers {
 
@@ -39,6 +41,9 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		/// <response code="500">Неизвестная ошибка.</response>
 		[HttpPost]
 		[ServiceFilter(typeof(ValidationFilterAttribute))]
+		[ProducesResponseType(typeof(ResultDetails), 200)]
+		[ProducesResponseType(typeof(ResultDetails), 400)]
+		[ProducesResponseType(typeof(ResultDetails), 500)]
 		public async Task<IActionResult> SaveAnalyzedVacancy([FromBody] VacancyForCreationDto vacancyData) {
 
 			// Проверка на существование вакансии.
@@ -106,12 +111,15 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		/// Возвращает данные по вакансии.
 		/// </summary>
 		/// <param name="headHunterId">Ид вакансии на ХХ.</param>
-		/// <response code="200">Данные вакансии</response>
+		/// <response code="200">Данные вакансии.</response>
 		/// <response code="400">Вакансия находится в архиве.</response>
 		/// <response code="500">Произошла ошибка при парсинге вакансии с ид id. Проверьте переданный ид на правильность или свяжитесь с разработчиком.</response>
 		/// <response code="500">Неизвестная ошибка.</response>
-		/// <returns>Данные вакансии</returns>
+		/// <returns>Данные вакансии.</returns>
 		[HttpGet("{headHunterId}")]
+		[ProducesResponseType(typeof(AnalyzedVacancyDto), 200)]
+		[ProducesResponseType(typeof(ResultDetails), 400)]
+		[ProducesResponseType(typeof(ResultDetails), 500)]
 		public async Task<IActionResult> AnalyzeVacancy(int headHunterId) {
 
 			await _hhService.LoadVacancyAsync(headHunterId);
@@ -152,12 +160,23 @@ namespace HeadHunterAnalyzer.API.Controllers {
 			return Ok(result);
 		}
 
+		/// <summary>
+		/// Возвращает набор вакансий, что были анализированы ранее.
+		/// </summary>
+		/// <param name="parameters">Параметры пагинации.</param>
+		/// <response code="200">Набор вакансий.</response>
+		/// <response code="500">Неизвестная ошибка.</response>
+		/// <returns>Набор вакансий.</returns>
 		[HttpGet]
-		public async Task<IActionResult> GetAllAnalyzedVacancies() {
+		[ProducesResponseType(typeof(IEnumerable<VacancyDto>), 200)]
+		[ProducesResponseType(typeof(ResultDetails), 500)]
+		public async Task<IActionResult> GetAllAnalyzedVacancies([FromQuery] RequestParameters parameters) {
 
-			var vacanciesEntities = await _repositoryManager.Vacancies.GetAllVacancies(trackChanges: false);
+			var vacancies = await _repositoryManager.Vacancies.GetAllVacancies(parameters, trackChanges: false);
 
-			var vacanciesDto = _mapper.Map<IEnumerable<VacancyDto>>(vacanciesEntities);
+			Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(vacancies.Metadata));
+
+			var vacanciesDto = _mapper.Map<IEnumerable<VacancyDto>>(vacancies);
 
 			return Ok(vacanciesDto);
 		}

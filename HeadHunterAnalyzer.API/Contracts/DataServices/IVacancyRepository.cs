@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 
 namespace Contracts.DataServices {
 
@@ -22,6 +23,6 @@ namespace Contracts.DataServices {
 		/// </summary>
 		/// <param name="trackChanges"></param>
 		/// <returns></returns>
-		public Task<IEnumerable<Vacancy>> GetAllVacancies(bool trackChanges);
+		public Task<PagedList<Vacancy>> GetAllVacancies(RequestParameters parameters, bool trackChanges);
 	}
 }

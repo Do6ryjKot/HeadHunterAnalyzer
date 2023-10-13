@@ -2,6 +2,7 @@
 using Contracts.DataServices;
 using Contracts.Logger;
 using Entities.DataTransferObjects;
+using Entities.InformationModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HeadHunterAnalyzer.API.Controllers {
@@ -21,10 +22,14 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		}
 
 		/// <summary>
-		/// Получить все добавленные слова
+		/// Получить все добавленные слова.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Набор слов.</returns>
+		/// <response code="200">Набор слов с количеством вхождений в вакансии.</response>
+		/// <response code="500">Неизвестная ошибка.</response>
 		[HttpGet]
+		[ProducesResponseType(typeof(IEnumerable<WordOccurrencesDto>), 200)]
+		[ProducesResponseType(typeof(ResultDetails), 500)]
 		public async Task<IActionResult> GetAllWords() {
 
 			IEnumerable<WordOccurrencesDto> result = await _repositoryManager.Words.GetAllWordsOccurrences();
