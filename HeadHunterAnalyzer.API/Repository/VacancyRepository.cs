@@ -12,7 +12,8 @@ namespace Repository {
 
 		public async Task<PagedList<Vacancy>> GetAllVacancies(RequestParameters parameters, bool trackChanges) {
 
-			var query = FindAll(trackChanges);			
+			var query = FindAll(trackChanges)
+				.Include(vacancy => vacancy.Words);
 
 			var vacancies = await query
 				.Skip((parameters.PageNumber - 1) * parameters.PageSize)
