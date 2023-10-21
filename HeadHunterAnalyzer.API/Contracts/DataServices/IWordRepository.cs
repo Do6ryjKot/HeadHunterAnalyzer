@@ -1,6 +1,5 @@
 ﻿using Entities.DataTransferObjects;
 using Entities.Models;
-using System.Collections;
 
 namespace Contracts.DataServices {
 
@@ -13,6 +12,8 @@ namespace Contracts.DataServices {
 		public Task<IEnumerable<Word>> GetWordsByVacancyIdAsync(Guid vacancyId, bool trackChanges);
 
 		public Task<IEnumerable<Word>> GetWordsByValuesAsync(IEnumerable<string> values, bool trackChanges);
+
+		public Task<IEnumerable<Word>> GetWordsByVacancyIdAndValues(Guid vacancyId, IEnumerable<string> values, bool trackChanges);
 
 		public void CreateWord(Word word);
 	}

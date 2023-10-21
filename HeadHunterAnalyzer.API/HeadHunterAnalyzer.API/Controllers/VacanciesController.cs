@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Contracts.DataServices;
-using Contracts.HeadHunter;
 using Contracts.Logger;
 using Entities.DataTransferObjects;
 using Entities.InformationModel;
-using Entities.Models;
 using Entities.RequestFeatures;
 using HeadHunterAnalyzer.API.Filters;
+using HeadHunterAnalyzer.API.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -19,14 +18,14 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		private readonly IMapper _mapper;
 		private readonly ILoggerManager _logger;
 		private readonly IRepositoryManager _repositoryManager;
-		private readonly IHeadHunterService _hhService;
+		private readonly IVacanciesManager _vacanciesManager;
 
-		public VacanciesController(IMapper mapper, ILoggerManager logger, IRepositoryManager repositoryManager, IHeadHunterService hhService) {
+		public VacanciesController(IMapper mapper, ILoggerManager logger, IRepositoryManager repositoryManager, IVacanciesManager vacanciesManager) {
 
 			_mapper = mapper;
 			_logger = logger;
 			_repositoryManager = repositoryManager;
-			_hhService = hhService;
+			_vacanciesManager = vacanciesManager;
 		}
 
 		/// <summary>
@@ -55,54 +54,7 @@ namespace HeadHunterAnalyzer.API.Controllers {
 				return BadRequest(new ResultDetails { StatusCode = StatusCodes.Status400BadRequest, Message = $"Вакасия с ид {vacancyData.HeadHunterId} уже существует." });
 			}
 
-			await _hhService.LoadVacancyAsync(vacancyData.HeadHunterId);
-
-			// Получение данных о предприятися со страницы вакансии.
-			Company companyFromPage = _hhService.GetCompany();
-
-			// Получение данных о вакансии со страницы вакансии.
-			vacancy = _hhService.GetVacancy();
-
-
-
-			// Проверка существования компании в БД.
-			Company? companyEntity = await _repositoryManager.Companies
-				.GetCompanyByHhIdAsync(companyFromPage.HeadHunterId, trackChanges: true);
-
-			if (companyEntity == null) {
-
-				vacancy.Company = companyFromPage;
-
-			} else {
-
-				companyEntity.Vacancies.Add(vacancy);
-			}
-
-
-
-			List<Word> words = _mapper.Map<IEnumerable<Word>>(vacancyData.Words).ToList();
-
-			IEnumerable<string> wordValues = words.Select(word => word.Value);
-			IEnumerable<Word> existingWords = await _repositoryManager.Words.GetWordsByValuesAsync(wordValues, trackChanges: true);
-
-			IEnumerable<Word> newWords = words.Where(word =>
-				!existingWords.Select(exWord => exWord.Value).Contains(word.Value));
-
-			foreach (var word in newWords) {
-
-				// _repositoryManager.Words.CreateWord(word);
-				vacancy.Words.Add(word);
-			}
-
-			foreach (var word in existingWords)
-				word.Vacancies.Add(vacancy);
-
-
-
-
-			_repositoryManager.Vacancies.CreateVacancy(vacancy);
-
-			await _repositoryManager.SaveAsync();
+			await _vacanciesManager.SaveVacancyAsync(vacancyData);
 
 			return Ok(new ResultDetails { StatusCode = StatusCodes.Status200OK, Message = "Вакансия сохранена успешно." });
 		}
@@ -122,40 +74,7 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		[ProducesResponseType(typeof(ResultDetails), 500)]
 		public async Task<IActionResult> AnalyzeVacancy(int headHunterId) {
 
-			await _hhService.LoadVacancyAsync(headHunterId);
-
-
-			AnalyzedVacancyDto result = new AnalyzedVacancyDto();
-
-
-			VacancyData vacancyData = _hhService.GetVacancyData();
-			result.VacancyData = vacancyData;
-
-
-			Company company = _hhService.GetCompany();
-			result.Company = _mapper.Map<AnalyzedCompanyDto>(company);
-
-
-			IEnumerable<Word> words;
-
-			Vacancy? vacancyEntity = await _repositoryManager.Vacancies.GetVacancyAsync(headHunterId, trackChanges: false);
-
-			if (vacancyEntity == null) {
-
-				result.AlreadyAnalyzed = false;
-
-				List<string> vacancyWords = _hhService.GetVacancyWords().ToList();
-				words = await _repositoryManager.Words.GetWordsByValuesAsync(vacancyWords, trackChanges: false);
-
-			} else { 
-			
-				result.AlreadyAnalyzed = true;
-
-				words = await _repositoryManager.Words.GetWordsByVacancyIdAsync(vacancyEntity.Id, trackChanges: false);
-			}
-
-			
-			result.Words = _mapper.Map<IEnumerable<WordDto>>(words);
+			var result = await _vacanciesManager.AnalyzeVacancyAsync(headHunterId);
 
 			return Ok(result);
 		}
@@ -179,6 +98,36 @@ namespace HeadHunterAnalyzer.API.Controllers {
 			var vacanciesDto = _mapper.Map<IEnumerable<VacancyDto>>(vacancies);
 
 			return Ok(vacanciesDto);
+		}
+
+		/// <summary>
+		/// Добавляет слова в уже сохраненную вакансию. Слова, что уже связаны с этой вакансией будут игнорироваться.
+		/// </summary>
+		/// <param name="vacancyId">Внутренний ид сохраненной вакансии.</param>
+		/// <param name="wordsToAdd">Набор слов, что необходимо добавить к вакансии.</param>
+		/// <returns>Новый набор слов вакансии.</returns>
+		[HttpPost("{vacancyId}/add-words")]
+		[ProducesResponseType(typeof(IEnumerable<WordDto>), 200)]
+		[ProducesResponseType(typeof(ResultDetails), 400)]
+		[ProducesResponseType(typeof(ResultDetails), 500)]
+		public async Task<IActionResult> AddWordsToAnalyzedVacancy(Guid vacancyId,
+				[FromBody] IEnumerable<WordForCreationDto> wordsToAdd) {
+
+			// Проверка на существование вакансии.
+			var vacancy = await _repositoryManager.Vacancies.GetVacancyAsync(vacancyId, trackChanges: true);
+
+			if (vacancy == null) {
+
+				_logger.LogError($"Вакасия с ид {vacancyId} не существует.");
+				return BadRequest(new ResultDetails {
+					StatusCode = StatusCodes.Status400BadRequest,
+					Message = $"Вакасия с ид {vacancyId} не существует."
+				});
+			}
+
+			var newWords = await _vacanciesManager.AddWordsToVacancyAsync(vacancy, wordsToAdd);
+
+			return Ok(newWords);
 		}
 	}
 }

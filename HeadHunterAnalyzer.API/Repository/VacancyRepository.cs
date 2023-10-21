@@ -30,5 +30,8 @@ namespace Repository {
 			await FindByCondition(vacancy => vacancy.HeadHunterId == headHunterId, trackChanges).FirstOrDefaultAsync();
 
 		public void CreateVacancy(Vacancy vacancy) => Create(vacancy);
+
+		public async Task<Vacancy?> GetVacancyAsync(Guid id, bool trackChanges) => 
+			await FindByCondition(vacancy => vacancy.Id ==  id, trackChanges).FirstOrDefaultAsync();
 	}
 }

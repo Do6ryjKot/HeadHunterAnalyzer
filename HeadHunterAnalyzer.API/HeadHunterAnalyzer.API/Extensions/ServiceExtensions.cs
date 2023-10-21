@@ -1,5 +1,7 @@
-﻿using Contracts.Logger;
+﻿using Contracts.HeadHunter;
+using Contracts.Logger;
 using Entities;
+using HeadHunterAnalyzer.API.Managers;
 using HeadHunterScrapingService;
 using LoggerService;
 using Microsoft.EntityFrameworkCore;
@@ -73,5 +75,15 @@ namespace HeadHunterAnalyzer.API.Extensions {
 				
 				client.BaseAddress = new Uri("https://hh.ru");
 			});
+
+		public static void ConfigureExternalServices(this IServiceCollection services) {
+
+			services.AddScoped<IHeadHunterService, HeadHunterService>();
+		}
+
+		public static void ConfigureManagers(this IServiceCollection services) {
+
+			services.AddScoped<IVacanciesManager, VacanciesManager>();
+		}
 	}
 }

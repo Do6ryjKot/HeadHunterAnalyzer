@@ -32,7 +32,9 @@ builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<IHeadHunterService, HeadHunterService>();
+builder.Services.ConfigureExternalServices();
+
+builder.Services.ConfigureManagers();
 
 builder.Services.AddControllers().AddNewtonsoftJson(opts =>
 	opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

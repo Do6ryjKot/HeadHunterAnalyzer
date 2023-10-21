@@ -16,6 +16,8 @@ namespace Contracts.DataServices {
 		/// <returns></returns>
 		public Task<Vacancy?> GetVacancyAsync(int headHunterId, bool trackChanges);
 
+		public Task<Vacancy?> GetVacancyAsync(Guid id, bool trackChanges);
+
 		public void CreateVacancy(Vacancy vacancy);
 
 		/// <summary>
