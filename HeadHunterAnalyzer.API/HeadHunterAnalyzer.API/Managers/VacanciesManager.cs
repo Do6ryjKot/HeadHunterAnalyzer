@@ -89,7 +89,7 @@ namespace HeadHunterAnalyzer.API.Managers {
 			return _mapper.Map<IEnumerable<WordDto>>(newVacancyWords);
 		}
 
-		public async Task SaveVacancyAsync(VacancyForCreationDto vacancyDto) {
+		public async Task<VacancyDto> SaveVacancyAsync(VacancyForCreationDto vacancyDto) {
 
 			await _hhService.LoadVacancyAsync(vacancyDto.HeadHunterId);
 
@@ -108,6 +108,8 @@ namespace HeadHunterAnalyzer.API.Managers {
 			_repositoryManager.Vacancies.CreateVacancy(vacancy);
 
 			await _repositoryManager.SaveAsync();
+
+			return _mapper.Map<VacancyDto>(vacancy);
 		}
 
 		/// <summary>

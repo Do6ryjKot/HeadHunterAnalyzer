@@ -10,7 +10,7 @@ namespace HeadHunterAnalyzer.API.Managers {
 		/// Сохраняет вакансию.
 		/// </summary>
 		/// <param name="vacancyDto">Данные вакансии</param>
-		public Task SaveVacancyAsync(VacancyForCreationDto vacancyDto);
+		public Task<VacancyDto> SaveVacancyAsync(VacancyForCreationDto vacancyDto);
 
 		/// <summary>
 		/// Добавляет набор слов к уже созданной вакансии.

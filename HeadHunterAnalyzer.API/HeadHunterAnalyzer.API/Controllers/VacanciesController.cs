@@ -40,7 +40,7 @@ namespace HeadHunterAnalyzer.API.Controllers {
 		/// <response code="500">Неизвестная ошибка.</response>
 		[HttpPost]
 		[ServiceFilter(typeof(ValidationFilterAttribute))]
-		[ProducesResponseType(typeof(ResultDetails), 200)]
+		[ProducesResponseType(typeof(VacancyDto), 200)]
 		[ProducesResponseType(typeof(ResultDetails), 400)]
 		[ProducesResponseType(typeof(ResultDetails), 500)]
 		public async Task<IActionResult> SaveAnalyzedVacancy([FromBody] VacancyForCreationDto vacancyData) {
@@ -54,9 +54,9 @@ namespace HeadHunterAnalyzer.API.Controllers {
 				return BadRequest(new ResultDetails { StatusCode = StatusCodes.Status400BadRequest, Message = $"Вакасия с ид {vacancyData.HeadHunterId} уже существует." });
 			}
 
-			await _vacanciesManager.SaveVacancyAsync(vacancyData);
+			var result = await _vacanciesManager.SaveVacancyAsync(vacancyData);
 
-			return Ok(new ResultDetails { StatusCode = StatusCodes.Status200OK, Message = "Вакансия сохранена успешно." });
+			return Ok(result);
 		}
 
 		/// <summary>
